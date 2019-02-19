@@ -18,5 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
-    Route::get('books', 'BooksController@getBooks');
+    Route::get('authors/{email}', 'AuthorController@index');
+    Route::get('authors/{email}/{authorId}', 'AuthorController@getAuthor');
+    Route::put('authors/{email}/{authorId}', 'AuthorController@updateAuthor');
+    Route::delete('authors/{email}/{authorId}', 'AuthorController@deleteAuthor');
+    Route::post('authors/{email}', 'AuthorController@create');
 });
+
+Route::group(['prefix' => 'v1', 'middleware' => ['api','cors']], function () {
+    Route::post('register', 'Auth\ApiRegisterController@register');
+});
+
