@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\LentBook;
 use Illuminate\Http\Request;
 
 class BooksController extends Controller
@@ -61,7 +62,7 @@ class BooksController extends Controller
         ], 203);
     }
 
-    public function lendBook($sandbox, $bookId, $bookId) {
+    public function lendBook($sandbox, $bookId, $userId) {
 
         $book =  Book::where([
             ['id', '=', $bookId],
@@ -72,11 +73,14 @@ class BooksController extends Controller
         $book->available = $book->available - 1;
 
         $book->save();
-
-        return response($book, 201);
+        $data = [
+            'book_id' => $book->id,
+            'user_id' => $userId,
+        ];
+        return response(LentBook::firstOrCreate($data), 204);
     }
 
-    public function returnBook($sandbox, $bookId, $bookId) {
+    public function returnBook($sandbox, $bookId, $userId) {
 
         $book =  Book::where([
             ['id', '=', $bookId],
@@ -85,8 +89,16 @@ class BooksController extends Controller
 
         $book->available = $book->available + 1;
 
-        $book->save();
 
-        return response($book, 201);
+        $lentBook =  Book::where([
+            ['book_id', '=', $bookId],
+            ['user_id', '=', $userId],
+        ])->first();
+
+        $lentBook->delete();
+
+        return response([
+            "success" => true
+        ], 204);
     }
 }
