@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 
@@ -29,4 +30,21 @@ class ApiRegisterController extends RegisterController
 
         return response(['user' => $user]);
     }
+
+    public function update(Request $request)
+    {
+        $data = $request->all();
+
+        $user =  $request->user();
+
+        $user->username = $data['username'];
+        $user->email = $data['email'];
+        $user->name = $data['name'];
+
+
+        $user->save();
+
+        return response($user);
+    }
+
 }
