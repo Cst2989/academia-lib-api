@@ -35,11 +35,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
     Route::post('books/{sandbox}/{bookId}/lend/{userId}', 'BooksController@lendBook');
     Route::post('books/{sandbox}/{bookId}/returned/{userId}', 'BooksController@returnBook');
 
-    Route::put('users/update', 'Auth\ApiRegisterController@update');
+    Route::put('users/update', 'UserController@update');
+
+    Route::get('users/view', function (Request $request) {
+        return $request->user();
+    });
 
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => ['api','cors']], function () {
-    Route::post('register', 'Auth\ApiRegisterController@register');
+    Route::post('users/signup', 'Auth\ApiRegisterController@register');
 });
 
