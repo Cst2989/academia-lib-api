@@ -18,11 +18,23 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
-    Route::get('authors/{email}', 'AuthorController@index');
-    Route::get('authors/{email}/{authorId}', 'AuthorController@getAuthor');
-    Route::put('authors/{email}/{authorId}', 'AuthorController@updateAuthor');
-    Route::delete('authors/{email}/{authorId}', 'AuthorController@deleteAuthor');
-    Route::post('authors/{email}', 'AuthorController@create');
+
+    Route::get('authors/{sandbox}', 'AuthorController@index');
+    Route::get('authors/{sandbox}/{authorId}', 'AuthorController@getAuthor');
+    Route::put('authors/{sandbox}/{authorId}', 'AuthorController@updateAuthor');
+    Route::delete('authors/{sandbox}/{authorId}', 'AuthorController@deleteAuthor');
+    Route::post('authors/{sandbox}', 'AuthorController@create');
+
+
+    Route::get('books/{sandbox}', 'BooksController@index');
+    Route::get('books/{sandbox}/{bookId}', 'BooksController@getBook');
+    Route::put('books/{sandbox}/{bookId}', 'BooksController@updateBook');
+    Route::delete('books/{sandbox}/{bookId}', 'BooksController@deleteBook');
+    Route::post('books/{sandbox}', 'BooksController@create');
+
+    Route::post('books/{sandbox}/{bookId}/lend/{userId}', 'BooksController@lendBook');
+    Route::post('books/{sandbox}/{bookId}/returned/{userId}', 'BooksController@returnBook');
+
 });
 
 Route::group(['prefix' => 'v1', 'middleware' => ['api','cors']], function () {
