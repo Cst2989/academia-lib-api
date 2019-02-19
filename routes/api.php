@@ -37,6 +37,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
 
     Route::put('users/update', 'UserController@update');
 
+    Route::get('users/view/lent_books', 'UserController@getLentBooks');
+
     Route::get('users/view', function (Request $request) {
         return $request->user();
     });

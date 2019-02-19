@@ -90,7 +90,7 @@ class BooksController extends Controller
         $book->available = $book->available + 1;
 
 
-        $lentBook =  Book::where([
+        $lentBook =  LentBook::where([
             ['book_id', '=', $bookId],
             ['user_id', '=', $userId],
         ])->first();
