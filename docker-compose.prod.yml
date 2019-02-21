@@ -3,10 +3,12 @@ services:
 
   #  The Application
   app:
-    image: creasta29/laravel-app
+    image: 260954743274.dkr.ecr.us-east-2.amazonaws.com/academia:app
     working_dir: /var/www
     volumes:
       - /var/www/storage
+    networks:
+      - default
     env_file: '.env'
     environment:
       - "DB_HOST=database"
@@ -14,16 +16,20 @@ services:
 
   # The Web Server
   web:
-    image: creasta29/laravel-web
-    volumes:
-      - "${LE_DIR}:/etc/letsencrypt"
+    image: 260954743274.dkr.ecr.us-east-2.amazonaws.com/academia:web
+    networks:
+      - default
     ports:
       - 80:80
       - 443:443
+    depends_on:
+      - app
 
   # The Database
   database:
     image: mysql:5.6
+    networks:
+      - default
     volumes:
       - dbdata:/var/lib/mysql
     environment:
@@ -35,6 +41,7 @@ services:
   # redis
   cache:
     image: redis:3.0-alpine
-
+    networks:
+      - default
 volumes:
   dbdata:
