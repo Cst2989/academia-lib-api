@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic']], function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['auth.basic', 'cors']], function () {
 
     Route::get('authors/{sandbox}', 'AuthorController@index');
     Route::get('authors/{sandbox}/{authorId}', 'AuthorController@getAuthor');
