@@ -9,7 +9,6 @@ services:
       - /var/www/storage
     networks:
       - default
-    env_file: '.env'
     environment:
       - "DB_HOST=database"
 
